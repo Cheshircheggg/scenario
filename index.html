@@ -427,7 +427,7 @@ function vMore() {
   return `<h1>Ещё</h1>
   ${S ? `<input type="search" id="q" placeholder="Поиск по сценарию" autocomplete="off"><div id="res"></div>
   <h2>Разделы документа</h2>${S.sections.map(s => `<div class="row" data-go="#/sec/${s.i}" role="link" tabindex="0"><span class="grow"><b>${esc(s.title)}</b><small>${KINDS[s.kind]}</small></span><span class="chev">›</span></div>`).join('')}` : ''}
-  <h2>Размер шрифта</h2><div class="fs">${['А', 'А+', 'А++'].map((t, i) => `<button data-fs="${i}" class="${i === fs ? 'on' : ''}">${t}</button>`).join('')}</div>
+  <h2>Размер шрифта</h2><div class="fs">${['А', 'А+', 'А++'].map((t, i) => `<button data-font="${i}" class="${i === fs ? 'on' : ''}">${t}</button>`).join('')}</div>
   <h2>Сценарии</h2>${list().map(x => `<div class="row" data-switch="${esc(x.id)}"><span class="grow"><b>${esc(x.title)}</b>${S && x.id === S.id ? '<small>открыт сейчас</small>' : ''}</span><button class="x" data-del="${esc(x.id)}" aria-label="Удалить">×</button></div>`).join('')}
   <p>${upBtn('Загрузить другой / новую версию', 'ghost')}</p>
   <p class="muted"><small>Новая версия того же сценария (с тем же названием) заменит текст, а отметки «снято», дубли и заметки сохранятся.</small></p>`;
@@ -478,7 +478,9 @@ function render() {
     case 'more': html = vMore(); break;
     default: html = vHome();
   }
+  const opened = [...document.querySelectorAll('details[open] summary')].map(x => x.textContent.split(' · ')[0]);
   $('#app').innerHTML = html;
+  document.querySelectorAll('details summary').forEach(x => { if (opened.includes(x.textContent.split(' · ')[0])) x.parentNode.open = true; });
   awake(r === 'shot');
 }
 let lastRoute = '';
@@ -486,13 +488,13 @@ addEventListener('hashchange', () => { render(); if (location.hash !== lastRoute
 document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && /#\/shot\//.test(location.hash) && awake(true));
 
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-done],[data-take],[data-up],[data-fs],[data-del],[data-switch],[data-go]');
+  const t = e.target.closest('[data-done],[data-take],[data-up],[data-font],[data-del],[data-switch],[data-go]');
   if (!t) return;
   const d = t.dataset;
   if (d.done != null) { e.stopPropagation(); st.done[d.done] = st.done[d.done] ? 0 : 1; if (!st.done[d.done]) delete st.done[d.done]; save(); render(); }
   else if (d.take != null) { st.takes[d.take] = Math.max(0, (st.takes[d.take] || 0) + +d.d); save(); render(); }
   else if (d.up != null) $('#file').click();
-  else if (d.fs != null) { LS.set('scn:fs', +d.fs); document.documentElement.dataset.fs = d.fs; render(); }
+  else if (d.font != null) { LS.set('scn:fs', +d.font); document.documentElement.dataset.fs = d.font; render(); }
   else if (d.del != null) {
     e.stopPropagation();
     const x = list().find(x => x.id === d.del);
