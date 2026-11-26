@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#e8742a">
+<title>Сценарий</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#f6f4f1;--card:#fff;--tx:#1d1b19;--mu:#6f6a64;--ln:#e6e1da;--ac:#d9661c;--acs:#fbe7d9;--ok:#2e8a57;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#121212;--card:#1e1d1c;--tx:#ece9e4;--mu:#a19b93;--ln:#2f2d2a;--ac:#ff8a3d;--acs:#3a2617;--ok:#4cc583}}
+html{font-size:16px}html[data-fs="1"]{font-size:18px}html[data-fs="2"]{font-size:21px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:1rem/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+main{max-width:680px;margin:0 auto;padding:16px 16px calc(84px + env(safe-area-inset-bottom))}
+h1{font-size:1.5rem;line-height:1.25;margin:.2em 0 .3em}h2{font-size:1.1rem;margin:1.4em 0 .5em}h3{font-size:1rem;margin:1.3em 0 .4em;color:var(--ac)}
+p{margin:.45em 0;white-space:pre-line}a{color:var(--ac)}
+.muted,small{color:var(--mu)}small{display:block;font-size:.85rem}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:14px 16px;margin:10px 0}
+.bar{height:8px;border-radius:4px;background:var(--ln);overflow:hidden;margin:6px 0}.bar i{display:block;height:100%;background:var(--ac)}
+.big-n{font-size:2rem;font-weight:700}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--card);border:1px solid var(--ln);border-radius:12px;margin:8px 0;cursor:pointer;color:inherit;text-decoration:none}
+.row .grow{flex:1;min-width:0}.row .grow b{font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.num{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ac);min-width:2.4em}
+.tick{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--mu);background:none;padding:0;cursor:pointer}
+.tick.on{background:var(--ok);border-color:var(--ok);position:relative}.tick.on::after{content:"✓";color:#fff;font-weight:700}
+.chev{color:var(--mu)}
+.btn,button.big{display:inline-block;border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:600;background:var(--ac);color:#fff;text-decoration:none;cursor:pointer;text-align:center}
+.btn.ghost{background:var(--acs);color:var(--ac)}
+button.big{width:100%;padding:16px;font-size:1.1rem}button.big.on{background:var(--ok)}
+.takes{display:flex;align-items:center;justify-content:center;gap:16px;margin:12px 0}
+.takes button{width:48px;height:48px;border-radius:50%;border:1px solid var(--ln);background:var(--card);color:var(--tx);font-size:1.4rem;cursor:pointer}
+.takes b{font-size:1.4rem;min-width:2ch;text-align:center}
+textarea,input[type=search],select{width:100%;font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px}
+textarea{min-height:90px;resize:vertical}select{width:auto;padding:6px 10px}
+.field{margin:14px 0}.lbl{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mu);margin-bottom:2px}.val{white-space:pre-line}
+.lead{font-size:1.1rem;font-weight:500}
+.chip{display:inline-block;padding:4px 10px;border-radius:20px;background:var(--acs);color:var(--ac);font-size:.85rem;margin:2px 4px 2px 0;text-decoration:none}
+.pn{display:flex;justify-content:space-between;gap:10px;margin-top:18px}.pn .btn{flex:1}
+.back{display:inline-block;padding:6px 0;text-decoration:none;font-weight:500}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--ln);cursor:pointer}
+.chk input{flex:none;width:22px;height:22px;margin:2px 0 0;accent-color:var(--ok)}.chk input:checked+span{color:var(--mu);text-decoration:line-through}
+p.li{padding-left:1.1em;position:relative}p.li::before{content:"•";position:absolute;left:0;color:var(--ac)}
+p.b{font-weight:600}
+.vh{margin-top:1.8em;letter-spacing:.06em}.vt{font-size:1.15rem;line-height:1.65}.pause{color:var(--mu);font-style:italic}
+details{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px 16px;margin:10px 0}
+details summary{cursor:pointer;font-weight:600}details .row{background:var(--bg)}
+mark{background:var(--acs);color:inherit}
+.fs{display:flex;gap:8px}.fs button{flex:1;padding:10px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--tx);cursor:pointer}.fs button.on{border-color:var(--ac);color:var(--ac);font-weight:700}
+.x{border:0;background:none;color:var(--mu);font-size:1.3rem;cursor:pointer;padding:4px 8px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom)}
+nav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;font-size:.72rem;color:var(--mu);text-decoration:none}
+nav a.on{color:var(--ac)}nav svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hero{text-align:center;padding-top:15vh}.hero p{max-width:30em;margin:1em auto 1.5em}
+.tcard .field{margin:6px 0}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<nav id="nav"></nav>
+<input type="file" id="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+<script>
+'use strict';
+// ---------- утилиты ----------
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const enc = encodeURIComponent;
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } },
+  set(k, v) { localStorage.setItem(k, JSON.stringify(v)) },
+};
+const slug = s => String(s).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, '').slice(0, 60);
+const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+
+// ---------- чтение .docx (zip) без библиотек ----------
+async function unzip(buf, want) {
+  const dv = new DataView(buf), u8 = new Uint8Array(buf), dec = new TextDecoder();
+  let e = buf.byteLength - 22;
+  while (e >= 0 && dv.getUint32(e, true) !== 0x06054b50) e--;
+  if (e < 0) throw new Error('это не .docx (если файл .doc — пересохраните его в Word как .docx)');
+  const n = dv.getUint16(e + 10, true), out = {};
+  let p = dv.getUint32(e + 16, true);
+  for (let i = 0; i < n; i++) {
+    const method = dv.getUint16(p + 10, true), csize = dv.getUint32(p + 20, true);
+    const nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true);
+    const off = dv.getUint32(p + 42, true), name = dec.decode(u8.subarray(p + 46, p + 46 + nl));
+    p += 46 + nl + xl + cl;
+    if (!want.includes(name)) continue;
+    const ds = off + 30 + dv.getUint16(off + 26, true) + dv.getUint16(off + 28, true);
+    let data = u8.subarray(ds, ds + csize);
+    if (method === 8) data = new Uint8Array(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());
+    out[name] = dec.decode(data);
+  }
+  return out;
+}
+
+// ---------- docx -> блоки ----------
+function parseDocx(files) {
+  const X = s => new DOMParser().parseFromString(s, 'application/xml');
+  const tag = (el, n) => el.getElementsByTagName('w:' + n);
+  const styles = {};
+  if (files['word/styles.xml']) for (const s of tag(X(files['word/styles.xml']), 'style')) {
+    const nm = tag(s, 'name')[0];
+    styles[s.getAttribute('w:styleId')] = nm ? nm.getAttribute('w:val') : '';
+  }
+  const ptext = p => {
+    let t = '';
+    for (const el of p.getElementsByTagName('*')) {
+      const n = el.localName;
+      if (n === 't') t += el.textContent; else if (n === 'tab') t += ' '; else if (n === 'br' || n === 'cr') t += '\n';
+    }
+    return t.replace(/ /g, ' ').replace(/[ \t]*\n[ \t]*/g, '\n').trim();
+  };
+  const blocks = [];
+  const walk = parent => { for (const el of parent.children) {
+    if (el.localName === 'p') {
+      const ps = tag(el, 'pStyle')[0], sid = ps ? ps.getAttribute('w:val') : '', sn = styles[sid] || sid;
+      const hm = /heading\s*(\d)|заголовок\s*(\d)/i.exec(sn);
+      const b = { t: 'p', text: ptext(el) };
+      if (hm) b.lvl = +(hm[1] || hm[2]); else if (/^(title|название)$/i.test(sn)) b.lvl = 0;
+      if (/list|спис/i.test(sn) || tag(el, 'numPr').length) b.list = 1;
+      let bold = true, any = false;
+      for (const r of tag(el, 'r')) {
+        if (![...tag(r, 't')].some(t => t.textContent.trim())) continue;
+        any = true;
+        const bb = tag(r, 'b')[0];
+        if (!bb || /^(0|false)$/.test(bb.getAttribute('w:val') || '')) bold = false;
+        const sz = tag(r, 'sz')[0];
+        if (sz && !b.sz) b.sz = +sz.getAttribute('w:val');
+      }
+      if (any && bold) b.bold = 1;
+      blocks.push(b);
+    } else if (el.localName === 'tbl') {
+      const rows = [];
+      for (const tr of el.children) if (tr.localName === 'tr')
+        rows.push([...tr.children].filter(c => c.localName === 'tc').map(tc => [...tag(tc, 'p')].map(ptext).filter(Boolean).join('\n')));
+      blocks.push({ t: 'tbl', rows });
+    } else if (el.localName === 'sdt') {
+      const c = [...el.children].find(c => c.localName === 'sdtContent');
+      if (c) walk(c);
+    }
+  }};
+  walk(tag(X(files['word/document.xml']), 'body')[0]);
+
+  // нет стилей заголовков -> угадываем по размеру шрифта / «ЧАСТЬ 1.»
+  if (!blocks.some(b => b.lvl != null)) {
+    const ps = blocks.filter(b => b.t === 'p' && b.text);
+    const mode = a => { const c = {}; a.forEach(x => c[x] = (c[x] || 0) + 1); return +Object.keys(c).sort((x, y) => c[y] - c[x])[0] || 0 };
+    const body = mode(ps.map(b => b.sz || 0));
+    let cand = body ? ps.filter(b => b.text.length < 150 && (b.sz || 0) >= body + 4) : [];
+    if (cand.length) {
+      const h1 = mode(cand.map(b => b.sz));
+      cand.forEach(b => b.lvl = b.sz > h1 ? 0 : b.sz === h1 ? 1 : 2);
+    } else ps.filter(b => b.bold && b.text.length < 100 && /^(часть|раздел|глава)\s|^\d+\.\s+\S/i.test(b.text)).forEach(b => b.lvl = 1);
+  }
+  blocks.forEach(b => delete b.sz);
+  return blocks;
+}
+
+function toRaw(blocks, fname) {
+  const ti = blocks.findIndex(b => b.lvl === 0);
+  const title = ti >= 0 ? blocks[ti].text : (blocks.find(b => b.text)?.text || fname.replace(/\.docx$/i, ''));
+  const lv = blocks.filter(b => b.lvl >= 1).map(b => b.lvl), top = lv.length ? Math.min(...lv) : 0;
+  const pre = [], sections = [];
+  let cur = null;
+  blocks.forEach((b, i) => {
+    if (i === ti) return;
+    if (top && b.lvl === top) { cur = { title: b.text, blocks: [] }; sections.push(cur); return; }
+    const nb = { ...b }; delete nb.lvl;
+    if (b.lvl != null) nb.lvl = 2;
+    if (!cur && top) { if (b.lvl != null) nb.bold = 1, delete nb.lvl; pre.push(nb); }
+    else (cur ||= (sections.push({ title: 'Документ', blocks: [] }), sections[0])).blocks.push(nb);
+  });
+  return { title, pre, sections };
+}
+
+// ---------- распознавание ----------
+const NUM = /^(?:№\s*)?(\d{1,2}(?:\.\d{1,2})?)[.)]?(?:\s+|$)(.*)$/s;
+const LABEL = /^([^:\n]{2,30}):\s*(.*)$/s;
+const TIME = /\d{1,2}:\d{2}\s*[–—-]\s*\d{1,2}:\d{2}|\d+\s*[–—-]\s*\d+(?:\s*(?:сек|с)\b)?/;
+const SYN = /что сним|кадр|визуал|текст|голос|закадр|техник|камер|как сн|монтаж|время|тайм|звук|локац|расстанов|дубл/i;
+const DAY = /^((?:день|д\.?)\s*\d+|отдельно)\s*[—–:-]?\s*(.*)$/is;
+const PROP = /реквизит|взять с собой|что взять|собрать/i;
+const SHOTNUM = /(?<![\d.])\d{1,2}\.\d{1,2}(?![\d.])/g;
+const KINDS = { text: 'текст', voice: 'текст озвучки', shots: 'кадры', days: 'план по дням', check: 'чек-лист' };
+
+function parseShots(sec, loose) {
+  const out = [], bl = sec.blocks;
+  let block = '', cur = null;
+  const nextText = i => { for (let j = i + 1; j < bl.length; j++) if (bl[j].t !== 'p' || bl[j].text) return bl[j]; };
+  bl.forEach((b, i) => {
+    if (b.t === 'tbl') {
+      cur = null;
+      const [head, ...rows] = b.rows;
+      if (!head || !rows.length) return;
+      let nc = head.findIndex(h => /^(№|#|номер)/i.test(h.trim()));
+      if (nc < 0 && rows.filter(r => /^\d{1,2}(\.\d{1,2})?$/.test((r[0] || '').trim())).length > rows.length / 2) nc = 0;
+      if (!loose && (nc < 0 || head.filter(h => SYN.test(h)).length < 2)) return;
+      const tc = head.findIndex(h => /время|тайм/i.test(h));
+      rows.forEach((r, k) => {
+        const id = (nc >= 0 ? r[nc] : '').trim() || String(k + 1);
+        out.push({ id, time: tc >= 0 ? r[tc] : '', title: '', block,
+          fields: head.map((h, j) => [h, r[j] || '']).filter((f, j) => j !== nc && j !== tc && f[1]) });
+      });
+      return;
+    }
+    if (b.lvl) { block = b.text; cur = null; return; }
+    if (!b.text) { if (!loose) cur = null; return; }
+    const m = NUM.exec(b.text), nx = nextText(i);
+    if (m && m[2].length < 120 && (loose || (nx && nx.t === 'p' && !nx.lvl && LABEL.test(nx.text) && !NUM.test(nx.text)))) {
+      const tm = TIME.exec(m[2]);
+      cur = { id: m[1], time: tm ? tm[0] : '', title: (tm ? m[2].replace(tm[0], '') : m[2]).replace(/^[\s·—–-]+|[\s·—–-]+$/g, ''), block, fields: [] };
+      out.push(cur);
+    } else if (cur) {
+      const lm = LABEL.exec(b.text);
+      if (lm) cur.fields.push([lm[1], lm[2]]);
+      else if (cur.fields.length) cur.fields[cur.fields.length - 1][1] += '\n' + b.text;
+      else cur.fields.push(['', b.text]);
+    }
+  });
+  return out;
+}
+
+function parseDays(sec, byId) {
+  const groups = [];
+  const add = (name, text) => groups.push({ name, text, items: [] });
+  sec.blocks.forEach(b => {
+    if (b.t === 'tbl') b.rows.forEach((r, k) => {
+      if (k === 0 && !r.some(c => /\d/.test(c))) return;
+      add(r[0] || 'Группа ' + (groups.length + 1), r.slice(1).join('\n'));
+    });
+    else if (b.text) {
+      const m = DAY.exec(b.text);
+      if (m) add(m[1].replace(/^./, c => c.toUpperCase()), m[2]);
+      else if (groups.length && !b.lvl) groups[groups.length - 1].text += '\n' + b.text;
+    }
+  });
+  for (const g of groups) {
+    const desc = [];
+    for (const tok of g.text.split(/[·•;\n]/)) {
+      const ids = (tok.match(SHOTNUM) || []).filter(id => byId[id]);
+      if (!ids.length) { if (tok.trim()) desc.push(tok.trim().replace(/:$/, '')); continue; }
+      const note = (/\(([^)]*)\)/.exec(tok) || [])[1] || '';
+      ids.forEach(id => g.items.some(x => x.id === id) || g.items.push({ id, note }));
+      const pre = tok.split(SHOTNUM)[0].trim();          // «…свет):» перед номерами
+      if (pre && !/^[\s(и,]*$/.test(pre)) desc.push(pre.replace(/:$/, ''));
+    }
+    g.desc = desc.join(' · ');
+  }
+  return groups;
+}
+
+function checkItems(sec) {
+  const out = [];
+  if (sec.kind !== 'check' && sec.kind !== 'text') return out;
+  let sub = '';
+  sec.blocks.forEach((b, bi) => {
+    if (b.t !== 'p') return;
+    if (b.lvl) { sub = b.text; return; }
+    if (!b.text) return;
+    const box = /^[☐□☑✓✔]|^\[[ x]?\]/i.test(b.text);
+    if (sec.kind === 'check' || ((PROP.test(sec.title) || PROP.test(sub)) && (b.list || box)))
+      out.push({ bi, type: sec.kind === 'check' ? 'check' : 'prop', key: sec.title + '|' + b.text.slice(0, 80), text: b.text.replace(/^([☐□☑✓✔]|\[[ x]?\])\s*/i, '') });
+  });
+  return out;
+}
+
+function autoKind(s) {
+  if (parseShots(s, false).length >= 2) return 'shots';
+  const ps = s.blocks.filter(b => b.t === 'p' && b.text && !b.lvl);
+  if (/чек-?лист/i.test(s.title) || (ps.length && ps.filter(b => /^[☐□]/.test(b.text)).length > ps.length / 2)) return 'check';
+  const dayHits = ps.filter(b => DAY.test(b.text) && !/^отдельно/i.test(b.text)).length + s.blocks.filter(b => b.t === 'tbl').reduce((n, t) => n + t.rows.filter(r => /^(день|д\.?)\s*\d/i.test(r[0] || '')).length, 0);
+  if (/по дням|план съ[её]мк|график съ/i.test(s.title) || dayHits >= 2) return 'days';
+  if (/озвучк|закадр|начитк/i.test(s.title)) return 'voice';
+  return 'text';
+}
+
+// ---------- состояние ----------
+let S = null, st = {};
+function build(raw) {
+  const m = { title: raw.title, pre: raw.pre, sections: [], shots: [], byId: {}, days: [], checks: [] };
+  raw.sections.forEach((s, i) => { const sec = { ...s, i, auto: autoKind(s) }; sec.kind = st.views[s.title] || sec.auto; m.sections.push(sec); });
+  for (const sec of m.sections) if (sec.kind === 'shots') {
+    sec.shots = parseShots(sec, sec.kind !== sec.auto);
+    for (const sh of sec.shots) {
+      let id = sh.id, n = 2;
+      while (m.byId[id]) id = sh.id + '·' + n++;
+      sh.id = id; sh.inDays = []; m.byId[id] = sh; m.shots.push(sh);
+    }
+  }
+  for (const sec of m.sections) {
+    if (sec.kind === 'days') { sec.dayIdx = []; for (const d of parseDays(sec, m.byId)) { sec.dayIdx.push(m.days.length); m.days.push(d); } }
+    sec.items = checkItems(sec); m.checks.push(...sec.items);
+  }
+  m.days.forEach((d, di) => d.items.forEach(x => m.byId[x.id].inDays.push({ di, name: d.name, note: x.note })));
+  const planned = new Set(m.days.flatMap(d => d.items.map(x => x.id)));
+  m.unplanned = m.days.length ? m.shots.filter(s => !planned.has(s.id)) : [];
+  m.voice = m.sections.filter(s => s.kind === 'voice');
+  return m;
+}
+const list = () => LS.get('scn:list', []);
+function load(id) {
+  const raw = id && LS.get('scn:doc:' + id);
+  if (!raw) { S = null; return; }
+  st = LS.get('scn:st:' + id, {});
+  for (const k of ['done', 'takes', 'note', 'chk', 'views']) st[k] ||= {};
+  S = build(raw); S.id = id;
+}
+const save = () => LS.set('scn:st:' + S.id, st);
+
+async function upload(file) {
+  try {
+    const f = await unzip(await file.arrayBuffer(), ['word/document.xml', 'word/styles.xml']);
+    if (!f['word/document.xml']) throw new Error('в файле нет текста Word');
+    const raw = toRaw(parseDocx(f), file.name), id = slug(raw.title) || slug(file.name) || 'scn';
+    LS.set('scn:doc:' + id, raw);
+    LS.set('scn:list', [{ id, title: raw.title }, ...list().filter(x => x.id !== id)]);
+    LS.set('scn:cur', id);
+    load(id);
+    location.hash = '#/'; render();
+  } catch (e) {
+    alert('Не получилось открыть файл: ' + (e.name === 'QuotaExceededError' ? 'не хватает места, удалите старые сценарии' : e.message));
+  }
+}
+
+// ---------- виды ----------
+const upBtn = (t = 'Загрузить сценарий (.docx)', cls = '') => `<button class="btn ${cls}" data-up>${t}</button>`;
+const shotRow = (s, note) => `<div class="row" data-go="#/shot/${enc(s.id)}" role="link" tabindex="0">
+  <button class="tick ${st.done[s.id] ? 'on' : ''}" data-done="${esc(s.id)}" aria-label="Снято"></button>
+  <span class="num">${esc(s.id)}</span>
+  <span class="grow"><b>${esc(s.title || s.fields[0]?.[1] || '')}</b>${s.time || note ? `<small>${esc([s.time, note].filter(Boolean).join(' · '))}</small>` : ''}</span>
+  <span class="chev">›</span></div>`;
+const chk = it => `<label class="chk"><input type="checkbox" data-chk="${esc(it.key)}" ${st.chk[it.key] ? 'checked' : ''}><span>${esc(it.text)}</span></label>`;
+const bar = (a, b) => `<div class="bar"><i style="width:${pct(a, b)}%"></i></div>`;
+const doneIn = ids => ids.filter(id => st.done[id]).length;
+const dayRow = (d, di) => { const ids = d.items.map(x => x.id), k = doneIn(ids);
+  return `<div class="row" data-go="#/day/${di}" role="link" tabindex="0"><span class="grow"><b>${esc(d.name)}</b>${ids.length ? bar(k, ids.length) : ''}<small>${ids.length ? `снято ${k} из ${ids.length}` : esc(d.desc.split('\n')[0])}</small></span><span class="chev">›</span></div>`; };
+
+function vHome() {
+  if (!S) return `<section class="hero"><h1>Сценарий</h1><p class="muted">Загрузите .docx со сценарием — приложение разложит его на текст, кадры, план по дням и чек-листы. Всё хранится только на этом телефоне и работает без интернета.</p>${upBtn()}</section>`;
+  const N = S.shots.length, k = doneIn(S.shots.map(s => s.id));
+  let h = `<h1>${esc(S.title)}</h1>` + S.pre.filter(b => b.text).slice(0, 6).map(b => `<small>${esc(b.text)}</small>`).join('');
+  if (N) {
+    h += `<div class="card"><div><span class="big-n">${k}</span> <span class="muted">из ${N} кадров снято</span></div>${bar(k, N)}</div>`;
+    const day = S.days.find(d => d.items.some(x => !st.done[x.id]));
+    const next = day ? S.byId[day.items.find(x => !st.done[x.id]).id] : S.shots.find(s => !st.done[s.id]);
+    if (next) h += `<h2>Следующий кадр${day ? ` · ${esc(day.name)}` : ''}</h2>` + shotRow(next, day?.items.find(x => x.id === next.id)?.note);
+    else h += `<div class="card">🎬 Все кадры сняты</div>`;
+    if (S.days.length) h += `<h2>По дням</h2>` + S.days.map(dayRow).join('');
+    const left = S.shots.filter(s => !st.done[s.id]);
+    if (left.length && left.length < N) h += `<details><summary>Не снято · ${left.length}</summary>${left.map(s => shotRow(s)).join('')}</details>`;
+  }
+  const props = S.checks.filter(c => c.type === 'prop'), pl = props.filter(c => !st.chk[c.key]).length;
+  if (props.length) h += `<details><summary>Реквизит · ${pl ? `не собрано ${pl} из ${props.length}` : 'всё собрано ✓'}</summary>${props.map(chk).join('')}</details>`;
+  for (const sec of S.sections.filter(s => s.kind === 'check' && s.items.length)) {
+    const d = sec.items.filter(c => st.chk[c.key]).length;
+    h += `<div class="row" data-go="#/sec/${sec.i}" role="link" tabindex="0"><span class="grow"><b>${esc(sec.title.replace(/^\d+\.\s*/, ''))}</b>${bar(d, sec.items.length)}<small>выполнено ${d} из ${sec.items.length}</small></span><span class="chev">›</span></div>`;
+  }
+  if (!N && !props.length) h += `<p class="muted">Кадры не распознаны. Откройте «Ещё» → раздел документа и выберите «Показывать как: кадры».</p>`;
+  return h;
+}
+
+function tableCards(rows) {
+  if (rows.length < 2 || rows[0].length < 2) return rows.map(r => `<p>${esc(r.join('\n'))}</p>`).join('');
+  const [hd, ...rs] = rows;
+  return rs.map(r => `<div class="card tcard">${r.map((c, j) => c ? `<div class="field"><div class="lbl">${esc(hd[j])}</div><div class="val">${esc(c)}</div></div>` : '').join('')}</div>`).join('');
+}
+function vBlocks(sec) {
+  const items = Object.fromEntries(sec.items.map(x => [x.bi, x]));
+  return sec.blocks.map((b, bi) => {
+    if (b.t === 'tbl') return tableCards(b.rows);
+    if (!b.text) return '';
+    if (b.lvl) return `<h3>${esc(b.text)}</h3>`;
+    if (items[bi]) return chk(items[bi]);
+    return `<p class="${b.list ? 'li' : ''} ${b.bold && b.text.length < 90 ? 'b' : ''}">${esc(b.text)}</p>`;
+  }).join('');
+}
+const vVoice = sec => sec.blocks.map(b => {
+  if (b.t === 'tbl') return tableCards(b.rows);
+  if (!b.text) return '';
+  if (b.lvl || (b.bold && b.text.length < 40) || (b.text.length < 30 && b.text === b.text.toUpperCase() && /\p{L}/u.test(b.text))) return `<h3 class="vh">${esc(b.text)}</h3>`;
+  if (/^\(.*\)$/s.test(b.text)) return `<p class="pause">${esc(b.text)}</p>`;
+  return `<p class="vt">${esc(b.text)}</p>`;
+}).join('');
+const vShotList = shots => { let blk = null; return shots.map(s => (s.block !== blk ? `<h3>${esc((blk = s.block) || '')}</h3>` : '') + shotRow(s)).join(''); };
+function vDaysOf(idx) {
+  return idx.map(di => dayRow(S.days[di], di)).join('') + (S.unplanned.length ? `<div class="row" data-go="#/day/x" role="link" tabindex="0"><span class="grow"><b>Вне плана</b><small>${S.unplanned.length} кадр(ов) не попали ни в один день</small></span><span class="chev">›</span></div>` : '');
+}
+
+function vSec(i) {
+  const sec = S.sections[i]; if (!sec) return vNF();
+  const sel = `<select data-view="${esc(sec.title)}" aria-label="Показывать как">${Object.entries(KINDS).map(([k, v]) => `<option value="${k}" ${k === sec.kind ? 'selected' : ''}>${v}${k === sec.auto ? ' (авто)' : ''}</option>`).join('')}</select>`;
+  const body = sec.kind === 'shots' ? (sec.shots.length ? vShotList(sec.shots) : '<p class="muted">Кадров не найдено.</p>')
+    : sec.kind === 'days' ? (sec.dayIdx.length ? vDaysOf(sec.dayIdx) : '<p class="muted">Дней не найдено.</p>')
+    : sec.kind === 'voice' ? vVoice(sec) : vBlocks(sec);
+  return `<a class="back" href="#/more">‹ Ещё</a><h1>${esc(sec.title)}</h1><p class="muted">Показывать как: ${sel}</p>${body}`;
+}
+
+function vShot(id) {
+  const s = S.byId[id]; if (!s) return vNF();
+  const i = S.shots.indexOf(s), pv = S.shots[i - 1], nx = S.shots[i + 1], on = st.done[id];
+  return `<a class="back" href="#/shots">‹ Кадры</a>
+  <h1><span class="num">${esc(id)}</span> ${s.time ? `<span class="muted">${esc(s.time)}</span>` : ''}</h1>
+  ${s.block ? `<p class="muted">${esc(s.block)}</p>` : ''}
+  ${s.inDays.map(d => `<a class="chip" href="#/day/${d.di}">${esc(d.name)}${d.note ? ' · ' + esc(d.note) : ''}</a>`).join('')}
+  ${s.title ? `<p class="lead">${esc(s.title)}</p>` : ''}
+  ${s.fields.map(([k, v]) => `<div class="field">${k ? `<div class="lbl">${esc(k)}</div>` : ''}<div class="val">${esc(v)}</div></div>`).join('')}
+  <button class="big ${on ? 'on' : ''}" data-done="${esc(id)}">${on ? '✓ Снято' : 'Отметить снятым'}</button>
+  <div class="takes"><span class="muted">Дубли</span><button data-take="${esc(id)}" data-d="-1" aria-label="Минус дубль">−</button><b>${st.takes[id] || 0}</b><button data-take="${esc(id)}" data-d="1" aria-label="Плюс дубль">+</button></div>
+  <textarea data-note="${esc(id)}" placeholder="Заметка: лучший дубль, что переснять…">${esc(st.note[id])}</textarea>
+  <div class="pn">${pv ? `<a class="btn ghost" href="#/shot/${enc(pv.id)}">‹ ${esc(pv.id)}</a>` : ''}${nx ? `<a class="btn ghost" href="#/shot/${enc(nx.id)}">${esc(nx.id)} ›</a>` : ''}</div>`;
+}
+
+function vDay(di) {
+  if (di === 'x') return `<a class="back" href="#/days">‹ По дням</a><h1>Вне плана</h1>` + S.unplanned.map(s => shotRow(s)).join('');
+  const d = S.days[di]; if (!d) return vNF();
+  const k = doneIn(d.items.map(x => x.id));
+  return `<a class="back" href="#/days">‹ По дням</a><h1>${esc(d.name)}</h1>${d.desc ? `<p class="muted">${esc(d.desc)}</p>` : ''}
+  ${d.items.length ? `<div class="card">снято ${k} из ${d.items.length}${bar(k, d.items.length)}</div>` : ''}
+  ${d.items.map(x => shotRow(S.byId[x.id], x.note)).join('')}`;
+}
+
+function vMore() {
+  const fs = +LS.get('scn:fs', 0);
+  return `<h1>Ещё</h1>
+  ${S ? `<input type="search" id="q" placeholder="Поиск по сценарию" autocomplete="off"><div id="res"></div>
+  <h2>Разделы документа</h2>${S.sections.map(s => `<div class="row" data-go="#/sec/${s.i}" role="link" tabindex="0"><span class="grow"><b>${esc(s.title)}</b><small>${KINDS[s.kind]}</small></span><span class="chev">›</span></div>`).join('')}` : ''}
+  <h2>Размер шрифта</h2><div class="fs">${['А', 'А+', 'А++'].map((t, i) => `<button data-fs="${i}" class="${i === fs ? 'on' : ''}">${t}</button>`).join('')}</div>
+  <h2>Сценарии</h2>${list().map(x => `<div class="row" data-switch="${esc(x.id)}"><span class="grow"><b>${esc(x.title)}</b>${S && x.id === S.id ? '<small>открыт сейчас</small>' : ''}</span><button class="x" data-del="${esc(x.id)}" aria-label="Удалить">×</button></div>`).join('')}
+  <p>${upBtn('Загрузить другой / новую версию', 'ghost')}</p>
+  <p class="muted"><small>Новая версия того же сценария (с тем же названием) заменит текст, а отметки «снято», дубли и заметки сохранятся.</small></p>`;
+}
+function search(q) {
+  q = q.trim().toLowerCase(); if (q.length < 2) return '';
+  const hl = t => { const i = t.toLowerCase().indexOf(q), a = Math.max(0, i - 40); return (a ? '…' : '') + esc(t.slice(a, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length, i + q.length + 80)) + '…'; };
+  const out = [];
+  for (const s of S.shots) { const t = [s.title, ...s.fields.map(f => f[1])].find(x => x.toLowerCase().includes(q)); if (t) out.push(`<div class="row" data-go="#/shot/${enc(s.id)}"><span class="num">${esc(s.id)}</span><span class="grow"><small>${hl(t)}</small></span></div>`); }
+  for (const sec of S.sections) if (sec.kind !== 'shots') for (const b of sec.blocks) {
+    const t = b.t === 'tbl' ? b.rows.flat().join(' · ') : b.text;
+    if (t.toLowerCase().includes(q)) out.push(`<div class="row" data-go="#/sec/${sec.i}"><span class="grow"><b>${esc(sec.title)}</b><small>${hl(t)}</small></span></div>`);
+  }
+  return out.slice(0, 60).join('') || '<p class="muted">Ничего не найдено</p>';
+}
+const vNF = () => `<p class="muted">Не найдено.</p><a href="#/">На главную</a>`;
+
+// ---------- навигация ----------
+const ICON = {
+  home: '<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  text: '<path d="M4 6h16M4 12h16M4 18h10"/>',
+  shots: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/>',
+  days: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  more: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
+};
+let wl = null;
+async function awake(on) {
+  try { if (on && !wl && navigator.wakeLock) { wl = await navigator.wakeLock.request('screen'); wl.onrelease = () => wl = null; } else if (!on && wl) await wl.release(); } catch {}
+}
+function render() {
+  const [, r = '', a] = decodeURIComponent(location.hash).match(/^#\/?([^/]*)\/?(.*)$/) || [];
+  const tabs = [['', 'Главная', 'home']];
+  if (S?.voice.length) tabs.push(['text', 'Текст', 'text']);
+  if (S?.shots.length) tabs.push(['shots', 'Кадры', 'shots']);
+  if (S?.days.length) tabs.push(['days', 'По дням', 'days']);
+  tabs.push(['more', 'Ещё', 'more']);
+  const act = { shot: 'shots', day: 'days', sec: 'more' }[r] ?? r;
+  $('#nav').innerHTML = tabs.map(([h, t, ic]) => `<a href="#/${h}" class="${act === h ? 'on' : ''}"><svg viewBox="0 0 24 24">${ICON[ic]}</svg>${t}</a>`).join('');
+  let html;
+  if (!S && r !== 'more') html = vHome();
+  else switch (r) {
+    case 'text': html = `<h1>Текст</h1>` + S.voice.map(s => (S.voice.length > 1 ? `<h2>${esc(s.title)}</h2>` : '') + vVoice(s)).join(''); break;
+    case 'shots': html = `<h1>Кадры</h1><p class="muted">снято ${doneIn(S.shots.map(s => s.id))} из ${S.shots.length}</p>` + vShotList(S.shots); break;
+    case 'days': html = `<h1>По дням</h1>` + vDaysOf(S.days.map((_, i) => i)); break;
+    case 'shot': html = vShot(a); break;
+    case 'day': html = vDay(a === 'x' ? 'x' : +a); break;
+    case 'sec': html = vSec(+a); break;
+    case 'more': html = vMore(); break;
+    default: html = vHome();
+  }
+  $('#app').innerHTML = html;
+  awake(r === 'shot');
+}
+let lastRoute = '';
+addEventListener('hashchange', () => { render(); if (location.hash !== lastRoute) scrollTo(0, 0); lastRoute = location.hash; });
+document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && /#\/shot\//.test(location.hash) && awake(true));
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-done],[data-take],[data-up],[data-fs],[data-del],[data-switch],[data-go]');
+  if (!t) return;
+  const d = t.dataset;
+  if (d.done != null) { e.stopPropagation(); st.done[d.done] = st.done[d.done] ? 0 : 1; if (!st.done[d.done]) delete st.done[d.done]; save(); render(); }
+  else if (d.take != null) { st.takes[d.take] = Math.max(0, (st.takes[d.take] || 0) + +d.d); save(); render(); }
+  else if (d.up != null) $('#file').click();
+  else if (d.fs != null) { LS.set('scn:fs', +d.fs); document.documentElement.dataset.fs = d.fs; render(); }
+  else if (d.del != null) {
+    e.stopPropagation();
+    const x = list().find(x => x.id === d.del);
+    if (!confirm(`Удалить «${x?.title}» с телефона? Отметки тоже удалятся.`)) return;
+    localStorage.removeItem('scn:doc:' + d.del); localStorage.removeItem('scn:st:' + d.del);
+    const L = list().filter(x => x.id !== d.del); LS.set('scn:list', L);
+    if (S?.id === d.del) { LS.set('scn:cur', L[0]?.id || ''); load(L[0]?.id); }
+    render();
+  }
+  else if (d.switch != null) { LS.set('scn:cur', d.switch); load(d.switch); location.hash = '#/'; render(); }
+  else if (d.go) location.hash = d.go;
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.dataset?.go) location.hash = e.target.dataset.go; });
+document.addEventListener('change', e => {
+  const d = e.target.dataset;
+  if (d.chk != null) { if (e.target.checked) st.chk[d.chk] = 1; else delete st.chk[d.chk]; save(); if (!location.hash.startsWith('#/sec')) render(); }
+  else if (d.view != null) { const sec = S.sections.find(s => s.title === d.view); if (e.target.value === sec.auto) delete st.views[d.view]; else st.views[d.view] = e.target.value; save(); load(S.id); render(); }
+});
+document.addEventListener('input', e => {
+  if (e.target.dataset.note != null) { st.note[e.target.dataset.note] = e.target.value; save(); }
+  else if (e.target.id === 'q') $('#res').innerHTML = search(e.target.value);
+});
+$('#file').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) upload(f); });
+
+document.documentElement.dataset.fs = LS.get('scn:fs', 0);
+load(LS.get('scn:cur', ''));
+render();
+if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js');
+</script>
+</body>
+</html>
